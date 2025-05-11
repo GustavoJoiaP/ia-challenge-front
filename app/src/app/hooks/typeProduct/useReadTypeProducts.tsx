@@ -1,25 +1,27 @@
-import { useState } from "react"
-
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-}
+import { useState } from "react";
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export const useGetProducts = () => {
+export interface TypeProduct {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export const useGetTypeProducts = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [typeProducts, setTypeProducts] = useState<TypeProduct[]>([]);
 
-  const getProducts = async () => {
+  const getTypeProducts = async () => {
     setLoading(true);
     setError(null);
 
+    
     try {
-      const response = await fetch(`${baseUrl}/products`, {
+      const response = await fetch(`${baseUrl}/type-products`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -27,29 +29,33 @@ export const useGetProducts = () => {
 
       if (!response.ok) {
         const errData = await response.json();
-        throw new Error(errData.message || 'Erro ao buscar produtos');
+        throw new Error(errData.message || 'Erro ao buscar tipos de produtos');
       }
 
       const data = await response.json();
       console.log(data);
-      setProducts(data);
+      setTypeProducts(data);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Erro desconhecido');
     } finally {
       setLoading(false);
     }
   };
-  
-  return { getProducts, loading, error, products };
+
+  return {
+    getTypeProducts,
+    loading,
+    error,
+    typeProducts,
+  };
 }; 
 
-
-export const useGetSpecificProduct = (productId?: string) => {
+export const useGetSpecificTypeProduct = (typeProductId?: string) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const getProductById = async () => {
-    if (!productId) {
+  const getTypeProductById = async () => {
+    if (!typeProductId) {
       return;
     }
 
@@ -58,7 +64,7 @@ export const useGetSpecificProduct = (productId?: string) => {
     setError(null);
 
     try {
-      const response = await fetch(`${baseUrl}/products/${productId}`, {
+      const response = await fetch(`${baseUrl}/type-products/${typeProductId}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -80,7 +86,7 @@ export const useGetSpecificProduct = (productId?: string) => {
 
 
   return {
-    getProductById,
+    getTypeProductById,
     loading,
     error,
   };

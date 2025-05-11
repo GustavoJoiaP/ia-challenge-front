@@ -15,7 +15,7 @@ export function Header() {
         {/* Menu */}
         <nav className="space-x-6 hidden md:flex">
           <Link href="/components/product" className="text-gray-700 hover:text-gray-900">Produtos</Link>
-          <Link href="/categories" className="text-gray-700 hover:text-gray-900">Categorias</Link>
+          <Link href="/components/typeProduct" className="text-gray-700 hover:text-gray-900">Categorias</Link>
           <Link href="/orders" className="text-gray-700 hover:text-gray-900">Pedidos</Link>
         </nav>
 

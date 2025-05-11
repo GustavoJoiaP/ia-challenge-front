@@ -4,32 +4,32 @@ import { useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertTriangle, Loader2, Trash2 } from 'lucide-react';
-import { useGetProducts } from '@/app/hooks/product/useReadProducts';
-import { useDeleteProduct } from '@/app/hooks/product/useDeleteProduct';
+import { useGetTypeProducts } from '@/app/hooks/typeProduct/useReadTypeProducts';
+import { useDeleteTypeProduct } from '@/app/hooks/typeProduct/useDeleteTypeProduct';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { toast } from 'sonner';
 
-export function ProductList() {
-  const { getProducts, loading, error, products } = useGetProducts();
-  const { deleteProduct, loading: deleteLoading } = useDeleteProduct();
+export function TypeProductList() {
+  const { getTypeProducts, loading, error, typeProducts } = useGetTypeProducts();
+  const { deleteTypeProduct, loading: deleteLoading } = useDeleteTypeProduct();
 
   useEffect(() => {
-    getProducts();
+    getTypeProducts();
   }, []);
 
-  const handleDelete = (productId: string) => {
-    toast('Tem certeza que deseja deletar este produto?', {
+  const handleDelete = (typeProductId: string) => {
+    toast('Tem certeza que deseja deletar este tipo de produto?', {
       action: {
         label: 'Deletar',
         onClick: async () => {
-          const success = await deleteProduct(productId);
+          const success = await deleteTypeProduct(typeProductId);
           if (success) {
-            toast.success('Produto deletado com sucesso!');
-            getProducts(); // Recarrega a lista após deletar
+            toast.success('Tipo de produto deletado com sucesso!');
+            getTypeProducts(); // Recarrega a lista após deletar
           } else {
-            toast.error('Erro ao deletar produto');
+            toast.error('Erro ao deletar tipo de produto');
           }
         },
       },
@@ -63,34 +63,31 @@ export function ProductList() {
   return (
     <div>
       <div className="flex justify-end mb-4">
-        <Link href="/components/product/new">
+        <Link href="/components/typeProduct/new">
           <Button>
             <Plus className="h-4 w-4 mr-2" />
-            Novo Produto
+            Categoria de Produto
           </Button>
         </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-        {products.map((product) => (
-          <Card key={product.id} className="hover:shadow-lg transition-shadow">
+        {typeProducts.map((typeProduct) => (
+          <Card key={typeProduct.id} className="hover:shadow-lg transition-shadow">
             <CardHeader>
-              <CardTitle>{product.name}</CardTitle>
+              <CardTitle>{typeProduct.name}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 mb-2">{product.description}</p>
-              <p className="text-lg font-semibold text-primary mb-4">
-                R$ {product.price.toFixed(2)}
-              </p>
+              <p className="text-gray-600 mb-2">{typeProduct.description}</p>
               <div className="flex gap-2">
-                <Link href={`/components/product/edit/${product.id}`} className="flex-1">
+                <Link href={`/components/typeProduct/edit/${typeProduct.id}`} className="flex-1">
                   <Button variant="outline" className="w-full">
-                    Editar Produto
+                    Editar Tipo
                   </Button>
                 </Link>
                 <Button 
                   variant="destructive" 
                   className="flex-1"
-                  onClick={() => handleDelete(product.id)}
+                  onClick={() => handleDelete(typeProduct.id)}
                   disabled={deleteLoading}
                 >
                   <Trash2 className="h-4 w-4 mr-2" />
@@ -103,5 +100,4 @@ export function ProductList() {
       </div>
     </div>
   );
-}
-
+} 
